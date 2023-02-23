@@ -45,6 +45,30 @@ app.get("/history", (req,res) => {
     })
 })
 
+// app.put('/update', (req, res) => {
+//   const id = req.body.id;
+//   const name = req.body.name;
+//   db.query("UPDATE userFoodLog SET name = ? where logId = ? ", [name, id], (err, result)=>{
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.send(result);
+//     }   
+//   });
+// });
+
+app.delete("/delete/:logId", (req, res)=>{
+  const id = req.params.logId;
+  db.query("DELETE FROM userFoodLog where logId = ?", id, (err,result)=>{
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }      
+  })
+})
+
 app.listen(3005, () => {
-  console.log("yey your server is running on port 3005");
+  console.log("server connected on port 3005");
 });
