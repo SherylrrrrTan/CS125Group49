@@ -8,8 +8,6 @@ function App() {
 
   const [exampleList, setExamplelist] = useState([]);
 
-  const [newName, setNewName] = useState("");
-
 
   const getList = () => {
     Axios.get("http://localhost:3005/history", {
@@ -21,6 +19,9 @@ function App() {
   }
 
   const addName = () => {
+    setDate("");
+    setName("");
+    setSize(0);
     Axios.post("http://localhost:3005/create", {
       name: name,
       date: date,
@@ -31,9 +32,6 @@ function App() {
   };
 
   // const updateName = (id) => {
-  //   setDate("");
-  //   setName("");
-  //   setSize(0);
   //   Axios.put("http://localhost:3005/update", {
   //     name: newName,
   //     logId: id
@@ -93,11 +91,11 @@ function App() {
             <h3>Name: {val.name}</h3>
             <div>
               {""}
-              <input type="text" placeholder="say something..." onChange={
+              {/* <input type="text" placeholder="say something..." onChange={
                 (event)=>{
                   setNewName(event.target.value);
                 }
-              }/>
+              }/> */}
               {/* <button onClick={
                 () => {updateName(val.logId)}
               }>Update</button> */}
