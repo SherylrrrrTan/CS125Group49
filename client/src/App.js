@@ -27,14 +27,14 @@ function App() {
   }
 
   const addName = () => {
-    setDate("");
-    setName("");
-    setSize(0);
     Axios.post("http://localhost:3005/create", {
       name: name,
       date: date,
       size: size,
     }).then(() => {
+      setDate("");
+      setName("");
+      setSize(0);
       console.log("success");
     });
   };
