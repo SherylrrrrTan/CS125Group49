@@ -111,7 +111,7 @@ export default function Fields({ navigation }) {
         }
 
         // Dump into user database
-        Axios.post("https://localhost:3306/createuser", {
+        Axios.post("http://localhost:3005/createuser", {
             id: id,
             name: name,
             sex: sex,

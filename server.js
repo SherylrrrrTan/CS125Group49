@@ -9,8 +9,14 @@ app.use(express.json());
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "",
-  database: "users",
+  password: "@pp1eJuice1",
+  port: 3306,
+  database: "users"
+});
+
+db.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
 });
 
 //insert stuff into db
@@ -84,7 +90,7 @@ app.post("/createuser", (req, res) => {
     const expenditure = req.body.expenditure;
   
     db.query(
-      "INSERT INTO users.user (id, name, sex, age, height, weight, goalweight, numdays, exercise, expenditure) VALUES (?,?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO user (id, name, sex, age, height, weight, goalweight, numdays, exercise, expenditure) VALUES (?,?,?,?,?,?,?,?,?,?)",
       [id, name, sex, age, height, weight, goalWeight, numDays, exercise, expenditure],
       (err, result) => {
         if (err) {
