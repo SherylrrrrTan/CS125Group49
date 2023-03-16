@@ -9,26 +9,40 @@ app.use(express.json());
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "", // your root password
+  password: "@pp1eJuice1", // your root password
   port: 3306,
-  database: "" // your database
+  database: "users" // your database
+});
+
+const db2 = mysql.createConnection({
+  user: "root",
+  host: "localhost",
+  password: "@pp1eJuice1", // your root password
+  port: 3306,
+  database: "food" // your database
 });
 
 db.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Connected User Database!");
+});
+
+db2.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected Food Database!");
 });
 
 //insert stuff into db
 app.post("/create", (req, res) => {
   //get info from frontend
+  const id = req.body.logid;
   const name = req.body.name;
   const size = req.body.size;
   const date = req.body.date;
 
-  db.query(
-    "INSERT INTO userFoodLog (name, size, date) VALUES (?,?,?)",
-    [name, size, date],
+  db2.query(
+    "INSERT INTO userFoodLog (logId, name, size, date) VALUES (?,?,?,?)",
+    [id, name, size, date],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -42,7 +56,7 @@ app.post("/create", (req, res) => {
 });
 
 app.get("/history", (req,res) => {
-    db.query("SELECT * FROM userFoodLog", (err, result) => {
+    db2.query("SELECT * FROM userFoodLog", (err, result) => {
         if (err) {
             console.log(err);
           } else {
@@ -65,7 +79,7 @@ app.get("/history", (req,res) => {
 
 app.delete("/delete/:logId", (req, res)=>{
   const id = req.params.logId;
-  db.query("DELETE FROM userFoodLog where logId = ?", id, (err,result)=>{
+  db2.query("DELETE FROM userFoodLog where logId = ?", id, (err,result)=>{
     if (err) {
       console.log(err);
     } else {
@@ -105,8 +119,9 @@ app.post("/createuser", (req, res) => {
     //question mark for secrutiy
 });
 
-app.get("/getuser", (req,res) => {
-    db.query("SELECT * FROM users.user WHERE id = 1", (err, result) => {
+app.get("/getuser/:id", (req,res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM users.user WHERE id=?", id, (err, result) => {
         if (err) {
             console.log("Error retrieving")
             console.log(err);

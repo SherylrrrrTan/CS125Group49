@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Button, View, TextInput, Picker } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from "axios";
+import globals from '../globals';
+
+const {v4 : uuidv4} = require('uuid')
 
 export default function Fields({ navigation }) {
-  const [id, setId] = useState(1);
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [sex, setSex] = useState('');
   const [age, setAge] = useState('');
@@ -17,6 +20,59 @@ export default function Fields({ navigation }) {
   const [numberOfDays, setNumberOfDays] = useState('');
   const [success, setSuccess] = useState(false);
 
+//   useEffect(()=>{
+//     console.log("HEREEEE")
+//     globals.UserId = uuidv4();
+//     console.log(globals.UserId)
+//     setId(globals.UserId)
+//   }, [])
+
+  useEffect(()=>{
+    // Height in cm
+    if (id != "") {
+        const cmHeight = 2.54 * (+heightInch + (12 * +heightFeet))
+
+        var burned = 0
+        if (activityLevel === 'N') {
+            burned = 200
+        }
+        else if (activityLevel === 'L') {
+            burned = 400
+        }
+        else if (activityLevel === 'M') {
+            burned = 600
+        } else {
+            burned = 800
+        }
+
+        // Men: BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) – (5.677 x age in years) 
+        // Women: BMR = 447.593 + (9.247 x weight in kg) + (3.098 x height in cm) – (4.330 x age in years)
+        if (sex === 'M') {
+            var expenditure = 88.362 + (13.397 * 0.453592 * +weight) + (4.799 * cmHeight) - (5.677 * +age) + burned
+        } else {
+            var expenditure = 477.593 + (9.247 * 0.453592 * +weight) + (3.098 * cmHeight) - (4.330 * +age) + burned
+        }
+
+        // Dump into user database
+        Axios.post("http://localhost:3005/createuser", {
+            id: id,
+            name: name,
+            sex: sex,
+            age: age,
+            height: cmHeight,
+            weight: weight,
+            goalWeight: goalWeight,
+            numDays: numberOfDays,
+            exercise: activityLevel,
+            expenditure: expenditure,
+            }).then(() => {
+            console.log("Successfully added to database!");
+        });
+
+        navigation.navigate("Home")
+        console.log(id)
+    }
+  }, [id])
 
   const checkFields = () => {
     if (!name) {
@@ -81,50 +137,10 @@ export default function Fields({ navigation }) {
     }
     else {
         setSuccess(true)
-        navigation.navigate("Home")
 
-        // assuming only one user since no login system
-        // id = 1
-
-        // Height in cm
-        var cmHeight = 2.54 * (heightInch + 12 * heightFeet)
-
-        var burned = 0
-        if (activityLevel === 'N') {
-            burned = 200
-        }
-        else if (activityLevel === 'L') {
-            burned = 400
-        }
-        else if (activityLevel === 'M') {
-            burned = 600
-        } else {
-            burned = 800
-        }
-
-        // Men: BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) – (5.677 x age in years) 
-        // Women: BMR = 447.593 + (9.247 x weight in kg) + (3.098 x height in cm) – (4.330 x age in years)
-        if (sex === 'M') {
-            var expenditure = 88.362 + (13.397 * 0.453592 * weight) + (4.799 * cmHeight) - (5.677 * age) + burned
-        } else {
-            var expenditure = 477.593 + (9.247 * 0.453592 * weight) + (3.098 * cmHeight) - (4.330 * age) + burned
-        }
-
-        // Dump into user database
-        Axios.post("http://localhost:3005/createuser", {
-            id: id,
-            name: name,
-            sex: sex,
-            age: age,
-            height: cmHeight,
-            weight: weight,
-            goalWeight: goalWeight,
-            numDays: numberOfDays,
-            exercise: activityLevel,
-            expenditure: expenditure,
-            }).then(() => {
-            console.log("Successfully added to database!");
-        });
+        globals.UserId = uuidv4();
+        console.log(globals.UserId)
+        setId(globals.UserId)
     }
   }
 
@@ -143,7 +159,6 @@ export default function Fields({ navigation }) {
             </View>
             <View style={styles.entryBox}>
                 <Picker
-                    sex={sex}
                     style={{ height: 45, width: 175 }}
                     onValueChange={(itemValue, itemIndex) => setSex(itemValue)}
                 >
@@ -205,7 +220,6 @@ export default function Fields({ navigation }) {
             </View>
             <View style={styles.entryBox}>
                 <Picker
-                    activityLevel={activityLevel}
                     style={{ height: 45, width: 175 }}
                     onValueChange={(itemValue, itemIndex) => setActivityLevel(itemValue)}
                 >
