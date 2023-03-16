@@ -9,17 +9,17 @@ app.use(express.json());
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "@pp1eJuice1", // your root password
+  password: "", // your root password
   port: 3306,
-  database: "users" // your database
+  database: "" // your user database
 });
 
 const db2 = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "@pp1eJuice1", // your root password
+  password: "", // your root password
   port: 3306,
-  database: "food" // your database
+  database: "" // your food log database
 });
 
 db.connect(function(err) {
