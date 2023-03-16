@@ -9,17 +9,17 @@ app.use(express.json());
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "@pp1eJuice1", // your root password
+  password: "", // your root password
   port: 3306,
-  database: "users" // your database
+  database: "" // your database
 });
 
 const db2 = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "@pp1eJuice1", // your root password
+  password: "", // your root password
   port: 3306,
-  database: "food" // your database
+  database: "" // your database
 });
 
 db.connect(function(err) {
@@ -102,10 +102,11 @@ app.post("/createuser", (req, res) => {
     const numDays = req.body.numDays;
     const exercise = req.body.exercise;
     const expenditure = req.body.expenditure;
+    const dailycalories = req.body.dailycalories;
   
     db.query(
-      "INSERT INTO user (id, name, sex, age, height, weight, goalweight, numdays, exercise, expenditure) VALUES (?,?,?,?,?,?,?,?,?,?)",
-      [id, name, sex, age, height, weight, goalWeight, numDays, exercise, expenditure],
+      "INSERT INTO user (id, name, sex, age, height, weight, goalweight, numdays, exercise, expenditure, dailycalories) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+      [id, name, sex, age, height, weight, goalWeight, numDays, exercise, expenditure, dailycalories],
       (err, result) => {
         if (err) {
           console.log("Error inserting")

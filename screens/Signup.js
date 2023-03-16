@@ -53,6 +53,10 @@ export default function Fields({ navigation }) {
             var expenditure = 477.593 + (9.247 * 0.453592 * +weight) + (3.098 * cmHeight) - (4.330 * +age) + burned
         }
 
+        // 3500 calories = 1 lb
+        var dailycalories = expenditure - ((3500 * (+weight - +goalWeight)) / numberOfDays)
+        console.log(expenditure, dailycalories)
+
         // Dump into user database
         Axios.post("http://localhost:3005/createuser", {
             id: id,
@@ -65,6 +69,7 @@ export default function Fields({ navigation }) {
             numDays: numberOfDays,
             exercise: activityLevel,
             expenditure: expenditure,
+            dailycalories: dailycalories,
             }).then(() => {
             console.log("Successfully added to database!");
         });
