@@ -11,7 +11,7 @@ const db = mysql.createConnection({
   host: "localhost",
   password: "", // your root password
   port: 3306,
-  database: "" // your database
+  database: "users" // your database
 });
 
 const db2 = mysql.createConnection({
@@ -19,7 +19,7 @@ const db2 = mysql.createConnection({
   host: "localhost",
   password: "", // your root password
   port: 3306,
-  database: "" // your database
+  database: "food" // your database
 });
 
 db.connect(function(err) {
