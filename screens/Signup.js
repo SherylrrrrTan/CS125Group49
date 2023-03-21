@@ -55,7 +55,9 @@ export default function Fields({ navigation }) {
 
         // 3500 calories = 1 lb
         var dailycalories = expenditure - ((3500 * (+weight - +goalWeight)) / numberOfDays)
-        console.log(expenditure, dailycalories)
+        console.log(expenditure, dailycalories);
+
+        globals.dailyCalorie = dailycalories;
 
         // Dump into user database
         Axios.post("http://localhost:3005/createuser", {
