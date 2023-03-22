@@ -9,17 +9,17 @@ app.use(express.json());
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "peiwen12", // your root password
+  password: "iamrootuser", // your root password
   port: 3306,
-  database: "users" // your database
+  database: "cs125test" // your database
 });
 
 const db2 = mysql.createConnection({
   user: "root",
   host: "localhost",
-  password: "peiwen12", // your root password
+  password: "iamrootuser", // your root password
   port: 3306,
-  database: "test" // your database
+  database: "cs125test" // your database
 });
 
 db.connect(function(err) {
@@ -122,7 +122,7 @@ app.post("/createuser", (req, res) => {
 
 app.get("/getuser/:id", (req,res) => {
     const id = req.params.id;
-    db.query("SELECT * FROM users.user WHERE id=?", id, (err, result) => {
+    db.query("SELECT * FROM user WHERE id=?", id, (err, result) => {
         if (err) {
             console.log("Error retrieving")
             console.log(err);

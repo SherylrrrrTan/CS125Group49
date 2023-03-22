@@ -5,6 +5,10 @@ import Plan from "./screens/Plan";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import '@ionic/react/css/core.css';
+import { i18n } from 'element-react'
+import locale from 'element-react/src/locale/lang/en'
+i18n.use(locale);
+// import 'element-theme-default';
 
 const Stack = createNativeStackNavigator();
 
